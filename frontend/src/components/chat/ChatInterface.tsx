@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Image, Mic, Paperclip, Bot, User, Sparkles, Zap } from 'lucide-react';
 import { Message } from '../../types/chat';
 import { sendMessage } from '@/lib/api';
+import SmartContentRenderer from '../ui/SmartContentRenderer';
+import ExamplePrompts from '../ui/ExamplePrompts';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -121,16 +123,11 @@ export default function ChatInterface() {
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-md">
               Start a conversation with your local AI model. Ask questions, get help with coding, or just chat!
             </p>
-            <div className="flex flex-wrap gap-2 justify-center">
-              <span className="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
-                ✨ Creative Writing
-              </span>
-              <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
-                💻 Code Help
-              </span>
-              <span className="px-3 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 rounded-full text-sm font-medium">
-                🧠 Problem Solving
-              </span>
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-4">
+                Try these example prompts:
+              </h3>
+              <ExamplePrompts onPromptSelect={(prompt) => setInput(prompt)} />
             </div>
           </div>
         ) : (
@@ -160,14 +157,26 @@ export default function ChatInterface() {
                     ? 'bg-gradient-to-r from-indigo-500 to-blue-600 text-white'
                     : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
                 }`}>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                  <p className={`text-xs mt-2 ${
-                    message.role === 'user' 
-                      ? 'text-indigo-100' 
-                      : 'text-slate-500 dark:text-slate-400'
-                  }`}>
-                    {message.timestamp.toLocaleTimeString()}
-                  </p>
+                  {message.role === 'user' ? (
+                    <div>
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                      <p className="text-xs mt-2 text-indigo-100">
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="text-sm">
+                        <SmartContentRenderer 
+                          content={message.content} 
+                          isDark={false} // Light mode for better readability in chat bubbles
+                        />
+                      </div>
+                      <p className="text-xs mt-2 text-slate-500 dark:text-slate-400">
+                        {message.timestamp.toLocaleTimeString()}
+                      </p>
+                    </div>
+                  )}
                   
                   {/* Message tail */}
                   <div className={`absolute top-3 w-3 h-3 transform rotate-45 ${
