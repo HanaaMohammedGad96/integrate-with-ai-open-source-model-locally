@@ -10,7 +10,7 @@ export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState('llama2');
+  const [selectedModel, setSelectedModel] = useState('gpt-oss:120b-cloud');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -80,6 +80,7 @@ export default function ChatInterface() {
               onChange={(e) => setSelectedModel(e.target.value)}
               className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
+              <option value="gpt-oss:120b-cloud">GPT-OSS Cloud</option>
               <option value="llama2">Llama 2</option>
               <option value="mistral">Mistral</option>
               <option value="codellama">CodeLlama</option>
