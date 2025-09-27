@@ -3,9 +3,9 @@ import StatusIndicator from '@/components/ui/StatusIndicator';
 
 export default function Home() {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
       {/* Status Bar */}
-      <div className="bg-gray-100 border-b border-gray-200 px-4 py-2 flex justify-end">
+      <div className="absolute top-4 right-4 z-50">
         <StatusIndicator />
       </div>
       
