@@ -6,12 +6,13 @@ import { Message } from '../../types/chat';
 import { sendMessage } from '@/lib/api';
 import SmartContentRenderer from '../ui/SmartContentRenderer';
 import ExamplePrompts from '../ui/ExamplePrompts';
+import { appConfig } from '@/config/appConfig';
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState('gpt-oss:120b-cloud');
+  const [selectedModel, setSelectedModel] = useState(appConfig.models[0].value);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -49,7 +50,7 @@ export default function ChatInterface() {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Sorry, there was an error processing your message. Please try again.',
+        content: appConfig.errorMessage,
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -78,9 +79,9 @@ export default function ChatInterface() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  AI Chat
+                  {appConfig.appTitle}
                 </h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Powered by local AI models</p>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{appConfig.appSubtitle}</p>
               </div>
             </div>
           </div>
@@ -92,11 +93,9 @@ export default function ChatInterface() {
                 onChange={(e) => setSelectedModel(e.target.value)}
                 className="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
               >
-                <option value="gpt-oss:120b-cloud">GPT-OSS Cloud</option>
-                <option value="llama2">Llama 2</option>
-                <option value="mistral">Mistral</option>
-                <option value="codellama">CodeLlama</option>
-                <option value="llava">LLaVA</option>
+                {appConfig.models.map((model) => (
+                  <option key={model.value} value={model.value}>{model.label}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -118,14 +117,14 @@ export default function ChatInterface() {
               </div>
             </div>
             <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-200 mb-4">
-              Welcome to AI Chat
+              {appConfig.welcomeTitle}
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-md">
-              Start a conversation with your local AI model. Ask questions, get help with coding, or just chat!
+              {appConfig.welcomeDescription}
             </p>
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-4">
-                Try these example prompts:
+                {appConfig.examplePromptsTitle}
               </h3>
               <ExamplePrompts onPromptSelect={(prompt) => setInput(prompt)} />
             </div>
@@ -242,7 +241,7 @@ export default function ChatInterface() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type your message here..."
+                placeholder={appConfig.inputPlaceholder}
                 className="w-full px-4 py-3 pr-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-800 dark:text-slate-200 placeholder-slate-500 dark:placeholder-slate-400 shadow-sm"
                 rows={1}
                 style={{ minHeight: '48px', maxHeight: '120px' }}

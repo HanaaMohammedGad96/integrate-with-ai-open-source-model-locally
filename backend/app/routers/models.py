@@ -3,6 +3,7 @@ import logging
 
 from ..services.chat_service import ChatService
 from ..dependencies import get_chat_service
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ async def get_available_models(
         return {"models": models}
     except Exception as e:
         logger.error(f"Error fetching models: {str(e)}")
-        return {"models": []}
+        return {"models": settings.default_models}
 
 
 @router.get("/health")
@@ -39,5 +40,5 @@ async def check_models_health(
         return {
             "status": "unhealthy",
             "model_count": 0,
-            "models": []
+            "models": settings.default_models
         }

@@ -23,6 +23,16 @@ class Settings(BaseSettings):
     # Security Settings
     api_key: Optional[str] = None
     
+    # Fallback/default models
+    default_models: list[str] = ["llama2", "mistral", "codellama", "llava", "gemma"]
+
+    # Error messages
+    error_ollama_api: str = "Error communicating with Ollama API"
+    error_ollama_not_running: str = "Ollama not running"
+    error_ollama_timeout: str = "Ollama request timeout"
+    error_empty_response: str = "I apologize, but I couldn't generate a response. Please try again."
+    error_internal: str = "Internal server error"
+
     class Config:
         env_file = ".env"
         case_sensitive = False

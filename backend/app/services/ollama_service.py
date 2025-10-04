@@ -2,6 +2,7 @@ import requests
 import logging
 from typing import Dict, List, Any, Optional
 from fastapi import HTTPException
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -9,9 +10,9 @@ logger = logging.getLogger(__name__)
 class OllamaService:
     """Service for interacting with Ollama API"""
     
-    def __init__(self, base_url: str = "http://localhost:11434"):
-        self.base_url = base_url
-        self.timeout = 60
+    def __init__(self, base_url: str = None):
+        self.base_url = base_url or settings.ollama_base_url
+        self.timeout = settings.ollama_timeout
     
     async def generate_response(self, model: str, prompt: str, stream: bool = False) -> Dict[str, Any]:
         """Generate AI response using Ollama"""
@@ -32,20 +33,20 @@ class OllamaService:
                 logger.error(f"Ollama API error: {response.status_code}")
                 raise HTTPException(
                     status_code=500, 
-                    detail="Error communicating with Ollama API"
+                    detail=settings.error_ollama_api
                 )
                 
         except requests.exceptions.ConnectionError:
             logger.error("Cannot connect to Ollama service")
             raise HTTPException(
                 status_code=503, 
-                detail="Ollama not running"
+                detail=settings.error_ollama_not_running
             )
         except requests.exceptions.Timeout:
             logger.error("Ollama request timeout")
             raise HTTPException(
                 status_code=504, 
-                detail="Ollama request timeout"
+                detail=settings.error_ollama_timeout
             )
         except Exception as e:
             logger.error(f"Unexpected error: {str(e)}")
@@ -69,10 +70,10 @@ class OllamaService:
                 
         except requests.exceptions.ConnectionError:
             logger.warning("Cannot connect to Ollama for model list")
-            return []
+            return settings.default_models
         except Exception as e:
             logger.error(f"Error fetching models: {str(e)}")
-            return []
+            return settings.default_models
     
     async def check_health(self) -> Dict[str, Any]:
         """Check if Ollama service is healthy"""

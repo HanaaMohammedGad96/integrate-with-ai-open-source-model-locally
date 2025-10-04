@@ -5,6 +5,7 @@ import logging
 from ..models.chat import ChatMessage, ChatResponse
 from ..services.chat_service import ChatService
 from ..dependencies import get_chat_service
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ async def chat_with_ai(
         logger.error(f"Unexpected error in chat endpoint: {str(e)}")
         raise HTTPException(
             status_code=500,
-            detail="Internal server error"
+            detail=settings.error_internal
         )
 
 
@@ -40,4 +41,4 @@ async def get_available_models(
         return {"models": models}
     except Exception as e:
         logger.error(f"Error getting models: {str(e)}")
-        return {"models": ['llama2', 'mistral', 'codellama', 'llava']}
+        return {"models": settings.default_models}

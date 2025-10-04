@@ -2,6 +2,7 @@ import logging
 from typing import Dict, Any
 from ..models.chat import ChatMessage, ChatResponse
 from .ollama_service import OllamaService
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class ChatService:
             available_models = await self.ollama_service.get_available_models()
             if available_models and message.model not in available_models:
                 logger.warning(f"Model {message.model} not available, using default")
-                message.model = "llama2"  # fallback to default
+                message.model = settings.default_models[0]  # fallback to first default model
             
             # Generate AI response
             ollama_response = await self.ollama_service.generate_response(
@@ -35,7 +36,7 @@ class ChatService:
             
             if not ai_response:
                 logger.warning("Empty response from Ollama")
-                ai_response = "I apologize, but I couldn't generate a response. Please try again."
+                ai_response = settings.error_empty_response
             
             return ChatResponse(
                 response=ai_response,
@@ -53,4 +54,4 @@ class ChatService:
         except Exception as e:
             logger.error(f"Error getting available models: {str(e)}")
             # Return fallback models
-            return ['llama2', 'mistral', 'codellama', 'llava']
+            return settings.default_models
