@@ -56,7 +56,7 @@ def test_endpoints():
     try:
         chat_data = {
             "message": "Hello, how are you?",
-            "model": "llama2"
+            "model": "llama3.2"
         }
         response = requests.post(
             f"{API_BASE_URL}/api/v1/chat/", 

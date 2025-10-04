@@ -45,4 +45,4 @@ def extract_error_message(error: Exception) -> str:
 
 def get_default_models() -> List[str]:
     """Get list of default fallback models"""
-    return ['llama2', 'mistral', 'codellama', 'llava', 'gemma']
+    return ['llama3.2', 'mistral', 'codellama', 'llava', 'gemma']

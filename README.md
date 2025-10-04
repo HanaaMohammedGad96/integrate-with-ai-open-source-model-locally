@@ -61,7 +61,7 @@ A full-stack application that integrates with local open-source AI models using 
 2. **Install Ollama:**
    ```bash
    # Visit https://ollama.ai to download and install Ollama
-   ollama pull llama2
+   ollama pull llama3.2
    ollama pull mistral
    ```
 
@@ -108,7 +108,7 @@ curl -X POST "http://localhost:8000/api/v1/chat/" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Hello, how are you?",
-    "model": "llama2"
+    "model": "llama3.2"
   }'
 
 # Check health

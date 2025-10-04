@@ -10,6 +10,11 @@ requests==2.32.5
 # CORS middleware
 python-multipart==0.0.6
 
+# Database
+sqlalchemy==2.0.31
+pg8000==1.31.2
+alembic==1.13.2
+
 # Development dependencies
 pytest==8.3.4
 pytest-asyncio==0.24.0

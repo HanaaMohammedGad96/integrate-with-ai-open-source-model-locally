@@ -24,7 +24,10 @@ class Settings(BaseSettings):
     api_key: Optional[str] = None
     
     # Fallback/default models
-    default_models: list[str] = ["llama2", "mistral", "codellama", "llava", "gemma"]
+    default_models: list[str] = ["llama3.2", "mistral", "codellama", "llava", "gemma"]
+
+    # Database settings
+    database_url: str = "postgresql://postgres:P@ssw0rd!@#@localhost/dbname"
 
     # Error messages
     error_ollama_api: str = "Error communicating with Ollama API"

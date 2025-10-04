@@ -178,7 +178,7 @@ curl -X POST "http://localhost:8000/api/v1/chat/" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Hello, how are you?",
-    "model": "llama2"
+    "model": "llama3.2"
   }'
 ```
 

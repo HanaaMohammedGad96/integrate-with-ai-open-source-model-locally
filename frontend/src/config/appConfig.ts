@@ -36,7 +36,7 @@ export const appConfig = {
   },
   models: [
     { value: "gpt-oss:120b-cloud", label: "GPT-OSS Cloud" },
-    { value: "llama2", label: "Llama 2" },
+    { value: "llama3.2", label: "Llama 2" },
     { value: "mistral", label: "Mistral" },
     { value: "codellama", label: "CodeLlama" },
     { value: "llava", label: "LLaVA" }
